@@ -56,6 +56,7 @@ def craw_web(seed):
 
 	return crawled
 
+
 def add_to_index(index, keyword, url):
 	for idx in index:
 		if idx[0] == keyword and url not in idx[1]:
@@ -63,6 +64,14 @@ def add_to_index(index, keyword, url):
 			return
 
 	index.append([keyword, [url]])
+
+
+def add_page_to_index(index, url, content):
+	splitted_content = content.split(' ')
+
+	for element in splitted_content:
+		add_to_index(index, element, url)
+
 
 def lookup(index, keyword):
 	for entry in index:
