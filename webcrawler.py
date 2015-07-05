@@ -43,11 +43,15 @@ def union(p, q):
 			p.append(element)
 
 
-def get_page(page):
-	return ''
+def get_page(url):
+	try:
+		import urllib
+		return urllib.urlopen(url).read()
+	except:
+		return "" 
 
 
-def craw_web(seed):
+def crawl_web(seed):
 	tocrawl = [seed]
 	crawled = []
 	index = []
