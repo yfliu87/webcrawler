@@ -32,3 +32,17 @@ def get_all_links(page):
 			break
 
 	return links
+
+def craw_web(seed):
+	tocrawl = [seed]
+	crawled = []
+
+	while tocrawl:
+		page = tocrawl.pop()
+
+		if page not in crawled:
+			links = get_all_links(page)
+			#union links with tocrawl
+			crawled.append(page)
+
+	return crawled
