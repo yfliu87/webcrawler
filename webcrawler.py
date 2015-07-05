@@ -9,6 +9,8 @@ Future work:
 performance improvement
 '''
 
+index = []
+
 def get_next_target(page):
 	start_link = page.find('<a href=')
 
@@ -53,3 +55,11 @@ def craw_web(seed):
 			crawled.append(page)
 
 	return crawled
+
+def add_to_index(index, keyword, url):
+	for idx in index:
+		if idx[0] == keyword and url not in idx[1]:
+			idx[1].append(url)
+			return
+
+	index.append([keyword, [url]])
