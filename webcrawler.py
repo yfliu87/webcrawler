@@ -20,6 +20,7 @@ def get_next_target(page):
 	url = page[start_quote+1 : end_quote]
 	print url, end_quote
 
+
 def get_all_links(page):
 	links = []
 	while True:
@@ -33,6 +34,13 @@ def get_all_links(page):
 
 	return links
 
+
+def union(p, q):
+	for element in q:
+		if element not in p:
+			p.append(element)
+
+
 def craw_web(seed):
 	tocrawl = [seed]
 	crawled = []
@@ -41,8 +49,7 @@ def craw_web(seed):
 		page = tocrawl.pop()
 
 		if page not in crawled:
-			links = get_all_links(page)
-			#union links with tocrawl
+			union(tocrawl, get_all_links(page))
 			crawled.append(page)
 
 	return crawled
