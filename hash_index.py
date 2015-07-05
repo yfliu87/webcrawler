@@ -9,3 +9,12 @@ def hash_string(keyword, buckets):
 		ret += ord(char)
 
 	return ret%buckets
+
+
+def make_hashtable(bucketsize):
+	htable = []
+
+	for index in bucketsize:
+		htable.append([])
+
+	return htable
