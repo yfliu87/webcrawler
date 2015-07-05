@@ -9,8 +9,6 @@ Future work:
 performance improvement
 '''
 
-index = []
-
 def get_next_target(page):
 	start_link = page.find('<a href=')
 
@@ -71,7 +69,7 @@ def get_page(url):
 def crawl_web(seed):
 	tocrawl = [seed]
 	crawled = []
-	index = []
+	index = {}
 
 	while tocrawl:
 		page = tocrawl.pop()
@@ -95,16 +93,14 @@ def record_user_click(index, keyword, url):
 
 
 def add_to_index(index, keyword, url):
-	for idx in index:
-		if idx[0] == keyword:
-			for link in idx[1]:
-				if url == link[0]:
-					return
+	if keyword in index:
+		if url in index[keyword]:
+			return 
+		else:
+			index[keyword].append([url,0])
 
-			idx[1].append([url,0])
-			return
-
-	index.append([keyword, [[url,0]]])
+	else:
+		index[keyword] = [[url, 0]]
 
 
 def add_page_to_index(index, url, content):
