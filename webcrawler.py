@@ -4,6 +4,7 @@ The first version plans to do below things:
 1. extract urls from seed page within specific depth
 2. index urls to its content
 3. simple query
+4. rank pages
 
 Future work:
 performance improvement
@@ -118,3 +119,37 @@ def lookup(index, keyword):
 		return index[keyword]
 
 	return None
+
+
+#pageRank
+def compute_ranks(graph):
+	dfactor = 0.8	#damping factor
+	numloops = 10
+
+	ranks = {}
+	numPages = len(graph)
+
+	#init each page with equal weights
+	for page in graph:
+		ranks[page] = 1.0/numPages
+
+	for index in range(numloops):
+		newranks = {}
+
+		'''
+		rank(page, t) = (1 - d)/npages 
+			+ sum(d*rank(p,t-1)/number of outlinks from p) 
+			over all pages p that link to this page
+		'''
+		for page in graph:
+			newrank = (1.0 - dfactor)/numPages
+
+			for node in graph:
+				if page in graph[node]:
+					newrank += dfactor * (ranks[node]/len(graph[node]))
+
+			newranks[page] = newrank
+
+		ranks = newranks
+
+	return ranks
