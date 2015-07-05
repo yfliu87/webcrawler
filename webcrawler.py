@@ -85,13 +85,26 @@ def crawl_web(seed):
 	return index 
 
 
+def record_user_click(index, keyword, url):
+	urls = lookup(index, keyword)
+
+	if urls:
+		for link in urls:
+			if url == link[0]:
+				link[1] += 1
+
+
 def add_to_index(index, keyword, url):
 	for idx in index:
-		if idx[0] == keyword and url not in idx[1]:
-			idx[1].append(url)
+		if idx[0] == keyword:
+			for link in idx[1]:
+				if url == link[0]:
+					return
+
+			idx[1].append([url,0])
 			return
 
-	index.append([keyword, [url]])
+	index.append([keyword, [[url,0]]])
 
 
 def add_page_to_index(index, url, content):
