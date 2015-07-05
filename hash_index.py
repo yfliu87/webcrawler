@@ -28,11 +28,28 @@ def hashtable_add(htable, key, value):
 	hashtable_get_bucket(htable, keyword).append([key, value])
 
 
-def hashtable_lookup(htable, key):
-	bucket = hashtable_get_bucket(htable, key)
-
+def find_bucket(bucket, key):
 	for entry in bucket:
 		if entry[0] == key:
 			return entry[1]
 
 	return None
+
+
+def hashtable_lookup(htable, key):
+	entry = find_bucket(hashtable_get_bucket(htable, key))
+
+	if entry:
+		return entry[1]
+	else:
+		return None
+
+
+def hashtable_update(htable, key, value):
+	bucket = hashtable_get_bucket(htable, key)
+	entry = find_bucket(bucket, key)
+
+	if entry:
+		entry[1] = value
+	else:
+		bucket.append([key, value])
