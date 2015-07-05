@@ -70,6 +70,7 @@ def crawl_web(seed):
 	tocrawl = [seed]
 	crawled = []
 	index = {}
+	graph = {}
 
 	while tocrawl:
 		page = tocrawl.pop()
@@ -77,10 +78,12 @@ def crawl_web(seed):
 		if page not in crawled:
 			content = get_page(page)
 			add_page_to_index(index, page, content)
-			union(tocrawl, get_all_links(page))
+			outlinks = get_all_links(page)
+			graph[page] = outlinks
+			union(tocrawl, outlinks)
 			crawled.append(page)
 
-	return index 
+	return index,graph 
 
 
 def record_user_click(index, keyword, url):
