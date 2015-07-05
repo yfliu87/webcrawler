@@ -115,8 +115,7 @@ def add_page_to_index(index, url, content):
 
 
 def lookup(index, keyword):
-	for entry in index:
-		if entry[0] == keyword:
-			return entry[1]
+	if keyword in index:
+		return index[keyword]
 
-	return []
+	return None
