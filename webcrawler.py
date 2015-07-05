@@ -43,6 +43,23 @@ def union(p, q):
 			p.append(element)
 
 
+def split_string(source, splitlist):
+	result = []
+	isAtSplitor = True
+
+	for char in source:
+		if char in splitlist:
+			isAtSplitor = True
+		else:
+			if isAtSplitor:
+				result.append(char)
+				isAtSplitor = False
+			else:
+				result[-1] = result[-1] + char
+
+	return result
+
+
 def get_page(url):
 	try:
 		import urllib
