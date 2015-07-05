@@ -22,3 +22,7 @@ def make_hashtable(bucketsize):
 
 def hashtable_get_bucket(htable, keyword):
 	return htable[hash_string(keyword, len(htable))]
+
+
+def hashtable_add(htable, key, value):
+	hashtable_get_bucket(htable, keyword).append([key, value])
