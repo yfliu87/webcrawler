@@ -169,3 +169,34 @@ def search_optimal(index, ranks, keyword):
 			bestURL = page
 
 	return bestURL
+
+
+def quicksort(pages, ranks):
+	if len(pages) <= 1:
+		return pages
+
+	pivot = pages[0]
+	less = []
+	more = []
+
+	for page in pages:
+		if ranks[page] <= ranks[pivot]:
+			less.append(page)
+		else:
+			more.append(page)
+
+	return quicksort(more, ranks) + [pivot] + quicksort(less,ranks)
+	
+
+def ordered_search(index, ranks, keyword):
+	pages = lookup(index, keyword)
+
+	if not pages:
+		return None
+
+	ret = []
+	for page in pages:
+		ret.append(page)
+
+	return quicksort(ret, ranks)
+
