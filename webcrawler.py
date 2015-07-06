@@ -153,3 +153,19 @@ def compute_ranks(graph):
 		ranks = newranks
 
 	return ranks
+
+
+def search_optimal(index, ranks, keyword):
+
+	pages = lookup(index, keyword)
+
+	if not pages:
+		return None
+
+	bestURL = pages[0] 
+
+	for page in pages:
+		if ranks[page] > ranks[bestURL]:
+			bestURL = page
+
+	return bestURL
