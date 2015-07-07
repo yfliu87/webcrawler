@@ -121,8 +121,24 @@ def lookup(index, keyword):
 	return None
 
 
+#recursively check the cycling reference
+def is_reciprocal(graph, source, dest, k):
+	if k == 0:
+		if source == dest:
+			return True
+		return False
+
+	if source in graph[dest]:
+		return True
+
+	for page in graph[dest]:
+		if is_reciprocal(graph, source, page, k - 1):
+			return True
+
+	return False
+
 #pageRank
-def compute_ranks(graph):
+def compute_ranks(graph, k):
 	dfactor = 0.8	#damping factor
 	numloops = 10
 
@@ -146,7 +162,10 @@ def compute_ranks(graph):
 
 			for node in graph:
 				if page in graph[node]:
-					newrank += dfactor * (ranks[node]/len(graph[node]))
+
+					#ignore pages that involved in cycling reference within k depth
+					if not is_reciprocal(graph, node, page, k):		
+						newrank += dfactor * (ranks[node]/len(graph[node]))
 
 			newranks[page] = newrank
 
