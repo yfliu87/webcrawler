@@ -21,17 +21,23 @@ def get_next_target(page):
 	url = page[start_quote+1 : end_quote]
 	return url, end_quote
 
+def validURL(url):
+	import re
+	prog = re.compile(r'^http')
+	return prog.match(url)
 
 def get_all_links(page):
 	links = []
 	while True:
 		url, endpos = get_next_target(page)
 
-		if url:
-			links.append(url)
-			page = page[endpos:]
-		else:
+		if not url:
 			break
+
+		if validURL(url):
+			links.append(url)
+
+		page = page[endpos:]
 
 	return links
 
@@ -221,4 +227,3 @@ def ordered_search(index, ranks, keyword):
 
 if __name__ == '__main__':
 	index, graph = crawl_web('http://www.baidu.com', 0)
-	print index
