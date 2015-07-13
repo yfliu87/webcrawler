@@ -19,7 +19,7 @@ def get_next_target(page):
 	start_quote = page.find('"', start_link)
 	end_quote = page.find('"', start_quote + 1)
 	url = page[start_quote+1 : end_quote]
-	print url, end_quote
+	return url, end_quote
 
 
 def get_all_links(page):
@@ -64,25 +64,32 @@ def get_page(url):
 		import urllib
 		return urllib.urlopen(url).read()
 	except:
-		return "" 
+		return "exception in get_page" 
 
 
-def crawl_web(seed):
+def crawl_web(seed, max_depth):
 	tocrawl = [seed]
 	crawled = []
 	index = {}
 	graph = {}
+	next_depth = []
+	cur_depth = 0
 
-	while tocrawl:
+	while tocrawl and cur_depth <= max_depth:
 		page = tocrawl.pop()
 
 		if page not in crawled:
 			content = get_page(page)
 			add_page_to_index(index, page, content)
-			outlinks = get_all_links(page)
+			outlinks = get_all_links(content)
 			graph[page] = outlinks
-			union(tocrawl, outlinks)
+			#union(tocrawl, outlinks)
+			union(next_depth, outlinks)
 			crawled.append(page)
+
+		if not tocrawl:
+			tocrawl,next_depth = next_depth,[]
+			cur_depth += 1
 
 	return index,graph 
 
@@ -211,3 +218,7 @@ def ordered_search(index, ranks, keyword):
 	pages = lookup(index, keyword)
 	return quicksort(pages, ranks)
 
+
+if __name__ == '__main__':
+	index, graph = crawl_web('http://www.baidu.com', 0)
+	print index
